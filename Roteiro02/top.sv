@@ -1,6 +1,5 @@
-// DESCRIPTION: Verilator: Systemverilog example module
-// with interface to switch buttons, LEDs, LCD and register display
-
+// Gabriel Victor de Vasconcelos Cesário - 120210143
+// Roteiro 02
 parameter divide_by=100000000;  // divisor do clock de referência
 // A frequencia do clock de referencia é 50 MHz.
 // A frequencia de clk_2 será de  50 MHz / divide_by
@@ -19,7 +18,6 @@ module top(input  logic clk_2,
            output logic lcd_MemWrite, lcd_Branch, lcd_MemtoReg, lcd_RegWrite);
 
   always_comb begin
-    SEG <= SWI;
     lcd_WriteData <= SWI;
     lcd_pc <= 'h12;
     lcd_instruction <= 'h34567890;
@@ -39,13 +37,33 @@ module top(input  logic clk_2,
     lcd_b <= {SWI, 56'hFEDCBA09876543};
   end
 
-  logic [3:0] contador;
+  // Problema 01
 
-  always_ff @(posedge clk_2) begin
-     contador <= contador+1;
+  parameter NUM_0 = 'b00111111;
+  parameter NUM_1 = 'b00000110;
+  parameter NUM_2 = 'b01011011;
+
+  always_comb begin
+    if(SWI[0] == 0 & SWI[1] == 0)
+      SEG[7:0] <= 0;
+    else if(SWI[0] == 0 & SWI[1] == 1)
+      SEG <= NUM_1;
+    else if(SWI[0] == 1 & SWI[1] == 0)
+      SEG <= NUM_0;
+    else
+      SEG <= NUM_2;
   end
 
-  always_comb LED[0] <= clk_2;  
-  always_comb LED[7:4] <= contador;
+  // Problema 02
 
+  logic [1:0] A;
+  logic [1:0] B;
+  logic selecao;
+
+  always_comb begin
+    A <= SWI[7:6];
+    B <= SWI[5:4];
+    selecao <= SWI[3];
+
+  end
 endmodule
