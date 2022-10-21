@@ -56,14 +56,18 @@ module top(input  logic clk_2,
 
   // Problema 02
 
+  logic selecao;
   logic [1:0] A;
   logic [1:0] B;
-  logic selecao;
 
   always_comb begin
+    selecao <= SWI[3];
     A <= SWI[7:6];
     B <= SWI[5:4];
-    selecao <= SWI[3];
 
+    if(selecao) 
+      LED <= B;
+    else
+      LED <= A;
   end
 endmodule
