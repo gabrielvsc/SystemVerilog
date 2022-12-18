@@ -4,7 +4,7 @@ main:
         addi a1, zero, 4 
         beq a0, a1, man 
 loop:    
-		add a2, a0, a0 
+	add a2, a0, a0 
         j fim
 man:
         add a2, a1, a1
